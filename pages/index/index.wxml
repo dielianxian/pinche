@@ -1,0 +1,133 @@
+<view class="page">
+ <!--页头-->
+  <!-- <view class="page__hd">
+  <view class="head">
+    <input bindblur="getstart" value="{{start}}" placeholder="始发地" type="text" />
+    <image src="/img/to.png" class="to"></image>
+    <input bindblur="getover" value="{{over}}" placeholder="目的地" auto-focus/>
+    <image src="/img/date.png" class="dateImg"></image>
+    <picker mode="date" value="{{date}}" class="date" start="{{minday}}" end="{{maxday}}" bindchange="bindDateChange">
+    <view class="picker">
+      {{date}}
+    </view>
+  </picker>
+  </view>
+ </view>  -->
+ <!--主体-->
+ <view class="page__bd"> 
+  <view class="weui-tab">
+            <view class="weui-navbar">
+                <block wx:for="{{tabs}}" wx:key="*this">
+                    <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
+                        <view class="weui-navbar__title">{{item}}</view>
+                    </view>
+                </block>
+                <view class="weui-navbar__slider" style="left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);"></view>
+            </view>
+            <view class="weui-tab__panel">
+                <view class="weui-tab__content" hidden="{{activeIndex != 0}}">
+                    
+                    <view class="weui-panel__bd">
+         <form bindsubmit="formSubmit">
+            <view class="weui-cell weui-cell_input StartAndStop">
+                    <view class="weui-cell__bd">
+                        <view class="weui-input" bindtap="sexDeparture">{{departure}}</view>          
+                    </view>
+                </view>
+                <view class="weui-cell weui-cell_input StartAndStop">
+                    <view class="weui-cell__bd">
+                        <view class="weui-input stop" bindtap="sexDestination">{{destination}}</view>
+                    </view>
+                </view>
+
+        
+            <view class="weui-cells__title"></view>
+            <view class="weui-cells weui-cells_after-title">
+                <view class="weui-cell weui-cell_input" >
+                    <view class="weui-cell__hd">
+                        <view class="weui-label">物品重量</view>
+                    </view>
+                    <view class="weui-cell__bd">
+                        <picker mode="selector" name="weight" value="{{weight}}" range="{{Weight}}" bindchange="setWeight">
+                            <view class="weui-input">{{Weight[weight]}}</view>
+                        </picker>
+                    </view>
+                    <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+                </view>
+                                <view class="weui-cell weui-cell_input" >
+                    <view class="weui-cell__hd">
+                        <view class="weui-label">我要加价</view>
+                    </view>
+                    <view class="weui-cell__bd">
+                        <picker mode="selector" name="addprice" value="{{addprice}}" range="{{addPrice}}" bindchange="setPrice">
+                            <view class="weui-input">{{addPrice[addprice]}}</view>
+                        </picker>
+                    </view>
+                    <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+                </view>
+            </view>
+            <view class="weui-cells__title">其他信息</view>
+            <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell">
+                <view class="weui-cell__bd">
+                    <textarea class="weui-textarea" name="remark" placeholder="更多情况,请输入说明" style="height: 3.3em" />
+                </view>
+            </view>
+        </view>
+
+        <checkbox-group bindchange="bindAgreeChange" name="isAgree">
+            <label class="weui-agree" for="weuiAgree">
+                <view class="weui-agree__text">
+                    <checkbox class="weui-agree__checkbox" id="weuiAgree" value="agree" checked="{{isAgree}}" />
+                    <view class="weui-agree__checkbox-icon">
+                        <icon class="weui-agree__checkbox-icon-check" type="success_no_circle" size="9" wx:if="{{isAgree}}"></icon>
+                    </view>
+                    阅读并同意<navigator url="/pages/notice/index?id=1" class="weui-agree__link">《免责声明》</navigator>
+                </view>
+            </label>
+        </checkbox-group>
+
+        <view class="weui-btn-area">
+            <button class="weui-btn" type="primary" formType="submit">确定</button>
+        </view>
+
+        </form>
+                    </view>
+
+                </view>
+                <view class="weui-tab__content" hidden="{{activeIndex != 1}}">
+                    <view class="weui-panel__bd">
+                        <navigator wx:for="{{list1}}" wx:for-index="idx" wx:key="k" wx:for-item="item" url="{{item.url}}" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+                            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+                                <image class="weui-media-box__thumb" src="{{item.avatarUrl}}" />
+                            </view>
+                            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+                                <view class="weui-media-box__title list_title"><text class="list_start">{{item.start}}</text> <image src="/img/to.png" class="to1"></image> <text class="list_over">{{item.over}}</text><text class="list_tm">{{item.tm}}</text></view>
+                                <view class="weui-media-box__desc list_desc">出发：{{item.date}} {{item.time}}</view>
+                                <view class="weui-media-box__info">
+                                    <view class="weui-media-box__info__meta list_type_{{item.tp}}">{{item.type}}</view>
+                                    <view class="weui-media-box__info__meta"><image src="/img/people.png" class="list_icon"></image><text>{{item.surplus}}</text></view>
+                                </view>
+                            </view>
+                        </navigator>
+                    </view>
+                </view>
+            </view>
+        </view>
+ </view>
+<view class="page__bd">
+    <view class="weui-loadmore" bindtap="onReachBottom" wx:if="{{!nomore}}">
+        <view class="weui-loading"></view>
+        <view class="weui-loadmore__tips">正在加载</view>
+    </view>
+    <view class="weui-loadmore weui-loadmore_line" wx:if="{{nomore}}">
+        <view class="weui-loadmore__tips weui-loadmore__tips_in-line">没有更多了~</view>
+    </view>
+</view>
+</view>
+
+<navigator url="/pages/info/add">
+    <view class="add" bindtap="add">
+    <image src="/img/adddy.png"></image>
+    </view>
+</navigator>
